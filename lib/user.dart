@@ -25,8 +25,7 @@ class User {
         String lastName = body['results'][0]['name']['last'];
         // Get the email address
         String email = body['results'][0]['email'];
-        print('First Name: $firstName');
-        print('Last Name: $lastName');
+        this.firstName = firstName;
       }
     });
     print('First Name: $firstName');

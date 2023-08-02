@@ -36,20 +36,49 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // Get the user from the provider
     User user = Provider.of<User>(context);
     return Scaffold(
-      body: Column(
-        children: [
-          Text('First Name: ${user.firstName}'),
-          Text('Last Name: ${user.lastName}'),
-          Text('Email: ${user.email}'),
-        ],
+      appBar: AppBar(
+        title: Text('Provider Example'),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Text('First Name: ${user.firstName}'),
+            Text('Last Name: ${user.lastName}'),
+            Text('Email: ${user.email}'),
+            ElevatedButton(
+              onPressed: () {
+                // Update the user
+                // user.firstName = 'Jane';
+
+                setState(() {
+                  user.info();
+                });
+
+                print('First Name: ${user.getFirstName}');
+              },
+              child: Text('Update User'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'second');
+              },
+              child: Text('Next Page'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -63,6 +92,9 @@ class SecondPage extends StatelessWidget {
     // Get the user from the provider
     User user = Provider.of<User>(context);
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Provider Example'),
+      ),
       body: Column(
         children: [
           Text('First Name: ${user.firstName}'),
