@@ -5,13 +5,16 @@ import 'main_model.dart';
 import 'user.dart';
 import 'service.dart';
 
-Future<void> main() async {
-  User user = User(firstName: 'John', lastName: 'Doe', email: 'test@mail.com');
+void main() {
   // Get the user using the service
   // User user = await RandomUserService().getUsers();
+  User user = User(
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'user@mail.com',
+  );
   runApp(
     Provider(
-      // Initialize the user service
       create: (context) => user,
       child: MyApp(),
     ),
@@ -21,19 +24,10 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: 'home',
-      routes: {
-        'home': (context) => HomePage(),
-        // '/page': (context) => Page(),
-      },
+      home: HomePage(),
     );
   }
 }
@@ -43,27 +37,17 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    // Get the user from the provider
+    User user = Provider.of<User>(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Provider Demo'),
-        ),
-        body: Center(
-          child: Column(children: [
-            Text('First Name: ${user.firstName}'),
-            Text('Last Name: ${user.lastName}'),
-            Text('Email: ${user.email}'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SecondPage()),
-                );
-              },
-              child: Text('Go to Second Page'),
-            ),
-          ]),
-        ));
+      body: Column(
+        children: [
+          Text('First Name: ${user.firstName}'),
+          Text('Last Name: ${user.lastName}'),
+          Text('Email: ${user.email}'),
+        ],
+      ),
+    );
   }
 }
 
@@ -72,17 +56,16 @@ class SecondPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    // Get the user from the provider
+    User user = Provider.of<User>(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Second Page'),
-        ),
-        body: Center(
-          child: Column(children: [
-            Text('First Name: ${user.firstName}'),
-            Text('Last Name: ${user.lastName}'),
-            Text('Email: ${user.email}'),
-          ]),
-        ));
+      body: Column(
+        children: [
+          Text('First Name: ${user.firstName}'),
+          Text('Last Name: ${user.lastName}'),
+          Text('Email: ${user.email}'),
+        ],
+      ),
+    );
   }
 }
