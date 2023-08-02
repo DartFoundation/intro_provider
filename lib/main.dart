@@ -2,9 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'page.dart';
 import 'main_model.dart';
+import 'user.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    Provider(
+      create: (context) => User(
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@mail.com',
+      ),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,62 +23,36 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MainModel(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      initialRoute: 'home',
+      routes: {
+        'home': (context) => HomePage(),
+        // '/page': (context) => Page(),
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '${Provider.of<MainModel>(context).counter}',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const MyWidget()));
-              },
-              child: Text('Go to Page'),
-            )
-          ],
+        appBar: AppBar(
+          title: Text('Provider Demo'),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed:
-            Provider.of<MainModel>(context, listen: false).incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        body: Center(
+          child: Column(children: [
+            Text('First Name: ${user.firstName}'),
+            Text('Last Name: ${user.lastName}'),
+            Text('Email: ${user.email}'),
+          ]),
+        ));
   }
 }
